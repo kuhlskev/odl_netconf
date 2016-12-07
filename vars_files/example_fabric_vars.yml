@@ -1,0 +1,55 @@
+---
+# Model options are: starter, general, highperf
+model: highperf
+# Topology options are expansion and non-expansion
+topology: non-expansion
+ucs_servers: True
+server_count: 10
+az_name: example_customer1
+az_oob_subnet: 192.168.10.0/24 # In CIDR notation
+external_net_cidr: 10.0.0.0/24 # In CIDR notation
+external_net_vlan: 1001
+isr_ip: 192.168.1.2/30 # In CIDR notation; real IP of ISR, could be the same as isr_wan_ip
+isr_wan_ip: 1.1.1.1 # Publicly reachable IP of ISR, could be the same as isr_ip
+isr_gateway: 192.168.1.1
+oobvpn_tunnel_net1: 192.168.11.0/31 # In CIDR notation
+oobvpn_tunnel_net2: 192.168.12.0/31 # In CIDR notation
+oobvpn_tunnel_vti: Tunnel1X # VTI number on the VPN headends; should be Tunnel1X, where X is the Xth allocated /31 subnet in Infoblox
+# Port aggregation is not yet implemented
+# Port aggregation options are: none, lacp, static, vpc
+# port_aggregation: none
+# Options for uplink port type are access or trunk
+# If port is access port, leave it as 1001, if it's a trunk, we need customer VLAN ID.
+# VLAN ID would then need to be set on uplink tor. ASR subif would need to have vlan ID set as well.
+# uplink_port_type:
+
+# Credentials (These all point to encrypted variables in passwords.yml)
+# Any site-specific passwords should be defined in passwords.yml with
+# the customer's shortname prefaced by the password name. The variables
+# below will then point to those vaulted variables.
+mcasr_password: "{{ customer_shortname_mcasr_password | default('PLACEHOLDER') }}"
+mcadmin_password: "{{ customer_shortname_mcadmin_password | default(default_mcadmin_password) }}"
+enable_password: "{{ customer_shortname_enable_password | default(default_enable_password) }}"
+snmp_comm_string: "{{ customer_shortname_snmp_comm_string | default('PLACEHOLDER') }}"
+snmp_auth_string: "{{ customer_shortname_snmp_auth_string | default('PLACEHOLDER') }}"
+snmp_priv_string: "{{ customer_shortname_snmp_priv_string | default('PLACEHOLDER') }}"
+ucs_password: "{{ customer_shortname_cimc_password | default('PLACEHOLDER') }}"
+oobvpn_remote_key1: "{{ customer_shortname_oobvpn_remote_key1 | default('PLACEHOLDER') }}"
+oobvpn_central_key1: "{{ customer_shortname_oobvpn_central_key1 | default('PLACEHOLDER') }}"
+oobvpn_remote_key2: "{{ customer_shortname_oobvpn_remote_key2 | default('PLACEHOLDER') }}"
+oobvpn_central_key2: "{{ customer_shortname_oobvpn_central_key2 | default('PLACEHOLDER') }}"
+
+# Interface variables
+# These should not need to change, but are listed here in case a change is required.
+az_ext_asr_vip: "{{ external_net_cidr | ipaddr('7') | ipaddr('address') }}"
+az_ext_asr1_ip: "{{ external_net_cidr | ipaddr('8') | ipaddr('address') }}"
+az_ext_asr2_ip: "{{ external_net_cidr | ipaddr('9') | ipaddr('address') }}"
+az_ext_gw_ip: "{{ external_net_cidr | ipaddr('1') | ipaddr('address') }}"
+az_ext_netmask: "{{ external_net_cidr | ipaddr('netmask') }}"
+az_oob_netmask: "{{ az_oob_subnet | ipaddr('netmask') }}"
+az_dashboard_ip: "{{ external_net_cidr | ipaddr('4') | ipaddr('address') }}"
+az_api_ip: "{{ external_net_cidr | ipaddr('5') | ipaddr('address') }}"
+az_oob_gw_ip: "{{ az_oob_subnet | ipaddr('1') | ipaddr('address') }}"
+
+# Customer shortname is just the az_name with numbers removed from the end
+customer_shortname: "{{ az_name | regex_replace('\\d*$', '') }}"

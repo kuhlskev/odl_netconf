@@ -1,0 +1,154 @@
+---
+
+devices:
+  - name: d3-3850x-1.cisco.com
+    device_type: 3850x
+    device_sku: "ws-c3850-24p"
+    hostname: "D3-3850X"
+    device_role: distro
+    fabric_role: transport
+    distro: 3
+    switch: 1
+    loopback_ip: "{{ D3_loop_subnet | ipaddr('1') | ipaddr('address') }}"
+    links:
+      - interface: "tengigabitethernet 1/0/21"
+        ip: "{{ C1_link_subnet | ipsubnet(31,4) | ipaddr('1') | ipaddr('address') }}"
+        desc: C1_link1
+      - interface: "tengigabitethernet 1/0/22"
+        ip: "{{ C2_link_subnet | ipsubnet(31,4) | ipaddr('1') | ipaddr('address') }}"
+        desc: C2_link1
+      - interface: "tengigabitethernet 1/0/1"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,0) | ipaddr('network')}}" # can't do ipaddr('0'), use ipaddr('network') as workaround
+        desc: D3-1_AS1_link1
+      - interface: "tengigabitethernet 1/0/2"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,1) | ipaddr('network')}}"
+        desc: D3-1_AS2_link1
+
+  - name: d3-3850x-2.cisco.com
+    device_type: 3850x
+    device_sku: "ws-c3850-24p"
+    hostname: "D3-3850X-2"
+    device_role: distro
+    fabric_role: transport
+    distro: 3
+    switch: 2
+    loopback_ip: "{{ D3_loop_subnet | ipaddr('2') | ipaddr('address') }}" 
+    links:
+      - interface: "tengigabitethernet 1/0/21"
+        ip: "{{ C1_link_subnet | ipsubnet(31,5) | ipaddr('1') | ipaddr('address') }}"
+        desc: C1_link1
+      - interface: "tengigabitethernet 1/0/22"
+        ip: "{{ C2_link_subnet | ipsubnet(31,5) | ipaddr('1') | ipaddr('address') }}"
+        desc: C2_link1
+      - interface: "tengigabitethernet 1/0/1"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,0) | ipaddr('network')}}"
+        desc: D3-2_AS1_link1
+      - interface: "tengigabitethernet 1/0/2"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,1) | ipaddr('network')}}"
+        desc: D3-2_AS2_link1
+
+  - name: ad3-3850-1.cisco.com
+    device_type: 3850
+    device_sku: "ws-c3850-24p"
+    hostname: "AD3-3850-1"
+    device_role: access
+    fabric_role: rloc
+    distro: 3
+    switch: 1
+    loopback_ip: "{{ D3_loop_subnet | ipaddr('11') | ipaddr('address') }}"
+    links:
+      - interface: "tengigabitethernet 1/1/3"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,0) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-1_link1
+      - interface: "tengigabitethernet 1/1/4"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,0) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-2_link1
+      - interface: "tengigabitethernet 3/1/3"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,1) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-1_link2
+      - interface: "tengigabitethernet 3/1/4"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,1) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-2_link2
+#
+  - name: ad3-3850-2.cisco.com
+    device_type: 3850
+    device_sku: "ws-c3850-24p"
+    hostname: "AD3-3850-2"
+    device_role: access
+    fabric_role: rloc
+    distro: 3
+    switch: 2
+    loopback_ip: "{{ D3_loop_subnet | ipaddr('12') | ipaddr('address') }}"
+    links:
+      - interface: "tengigabitethernet 1/1/3"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,2) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-1_link1
+      - interface: "tengigabitethernet 1/1/4"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,2) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-2_link1
+      - interface: "tengigabitethernet 2/1/3"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,3) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-1_link2
+      - interface: "tengigabitethernet 2/1/4"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,3) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-2_link2
+#
+  - name: ad3-3850-3.cisco.com
+    device_type: 3850
+    device_sku: "ws-c3850-24p"
+    hostname: "AD3-3850-3"
+    device_role: access
+    fabric_role: rloc
+    distro: 3
+    switch: 3
+    loopback_ip: "{{ D3_loop_subnet | ipaddr('13') | ipaddr('address') }}"
+    links:
+      - interface: "tengigabitethernet 1/1/3"
+        ip: "{{ D3_1_link_subnet | ipsubnet(31,4) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-1_link1
+      - interface: "tengigabitethernet 1/1/4"
+        ip: "{{ D3_2_link_subnet | ipsubnet(31,4) | ipaddr('1') | ipaddr('address') }}"
+        desc: D3-2_link1
+
+
+#  c1-6807-1:
+#    name: c1-6807-1.cisco.com
+#    device_type: 6800
+#    device_role: core
+#    fabric_role: rloc
+#    switch: 1
+#    dl11: "tengigabitethernet 1/1"
+#    dl12: "tengigabitethernet 2/1"
+#    dl21: "tengigabitethernet 1/2"
+#    dl22: "tengigabitethernet 2/2"
+#  c1-6807-2:
+#    name: c1-6807-2.cisco.com
+#    device_type: 6800
+#    device_role: core
+#    fabric_role: rloc
+#    switch: 2
+#    dl11: "tengigabitethernet 1/1"
+#    dl12: "tengigabitethernet 2/1"
+#    dl21: "tengigabitethernet 1/2"
+#    dl22: "tengigabitethernet 2/2"
+#  c1-7702-1:
+#    name: c2-n7702-1.cisco.com
+#    device_type: 7700
+#    device_role: core
+#    fabric_role: rloc
+#    switch: 1
+#    dl11: "tengigabitethernet 1/1"
+#    dl12: "tengigabitethernet 2/1"
+#    dl21: "tengigabitethernet 1/2"
+#    dl22: "tengigabitethernet 2/2"
+#  c1-7702-2:
+#    name: c2-n7702-2.cisco.com
+#    device_type: 7700
+#    device_role: core
+#    fabric_role: rloc
+#    switch: 2
+#    dl11: "tengigabitethernet 1/1"
+#    dl12: "tengigabitethernet 2/1"
+#    dl21: "tengigabitethernet 1/2"
+#    dl22: "tengigabitethernet 2/2"
+#  

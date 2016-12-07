@@ -1,0 +1,55 @@
+#fabric_ip_scheme
+
+subnet: 10.4.0.0/16 # primary routed subnet for loopbacks, regions and endpoints
+loopback_subnet: 10.0.0.0/16 # new loopback subnet for DNA fabric
+vn_subnet: 10.1.0.0/16
+ULDL_subnet: 192.168.0.0/16 # non-routed interswitch link subnets
+isl_netmask: '255.255.255.254'
+
+# All below variables are derived variables
+
+core_subnet: "{{ subnet | ipsubnet(20, 0) }}" # "10.4.0.0/20"
+internet_edge_inside_subnet: "{{ subnet | ipsubnet(20, 1) }}" # "10.4.16.0/20"
+wan_agg_subnet: "{{ subnet | ipsubnet(20, 2) }}" # "10.4.32.0/20"
+datacenter_subnet: "{{ subnet | ipsubnet(20, 3) }}" # "10.4.48.0/20"
+shared_services_subnet: "{{ subnet | ipsubnet(20, 10) }}" # "10.4.160.0/20"
+remote_datacenter_subnet: "{{ subnet | ipsubnet(20, 11) }}" # "10.4.176.0/20"
+
+# Virtual Neighborhood Subnets
+vn_1_subnet: "{{ vn_subnet | ipsubnet(20, 4) }}" # "10.4.64.0/20"
+vn_2_subnet: "{{ vn_subnet | ipsubnet(20, 5) }}" # "10.4.80.0/20"
+vn_3_subnet: "{{ vn_subnet | ipsubnet(20, 6) }}" # "10.4.96.0/20"
+vn_4_subnet: "{{ vn_subnet | ipsubnet(20, 7) }}" # "10.4.112.0/20"
+vn_5_subnet: "{{ vn_subnet | ipsubnet(20, 8) }}" # "10.4.128.0/20"
+vn_6_subnet: "{{ vn_subnet | ipsubnet(20, 9) }}" # "10.4.144.0/20"
+
+core_aggregate: "{{ core_subnet | ipsubnet }}"
+vn1_aggregate: "{{ vn_vn_1_subnet | ipsubnet }}"
+vn2_aggregate: "{{ vn_vn_2_subnet | ipsubnet }}"
+vn3_aggregate: "{{ vn_vn_3_subnet | ipsubnet }}"
+vn4_aggregate: "{{ vn_vn_4_subnet | ipsubnet }}"
+vn5_aggregate: "{{ vn_vn_5_subnet | ipsubnet }}"
+vn6_aggregate: "{{ vn_vn_6_subnet | ipsubnet }}"
+
+D1_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 1) }}"
+D2_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 2) }}"
+D3_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 3) }}"
+D4_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 4) }}"
+D5_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 5) }}"
+D6_loop_subnet: "{{ loopback_subnet | ipsubnet(24, 6) }}"
+
+# Interconnect Subnets aggregates
+C1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,1) }}"
+C2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,2) }}"
+D1_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,11) }}"
+D1_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,12) }}"
+D2_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,21) }}"
+D2_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,22) }}"
+D3_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,31) }}"
+D3_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,32) }}"
+D4_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,41) }}"
+D4_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,42) }}"
+D5_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,51) }}"
+D5_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,52) }}"
+D6_1_link_subnet: "{{ ULDL_subnet | ipsubnet(24,61) }}"
+D6_2_link_subnet: "{{ ULDL_subnet | ipsubnet(24,62) }}"

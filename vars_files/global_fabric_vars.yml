@@ -1,0 +1,46 @@
+---
+# Global vars that SHOULD be the same across sites.
+
+# General Variables
+config_output_directory: "{{ playbook_dir }}/config_output/{{ site_name }}"
+inventory_directory: "{{ playbook_dir }}/inventory/"
+log_dir: "{{ playbook_dir }}/logs/{{ inventory_hostname }}"
+
+# Location information
+site_name: dna_fabric_new_new
+deploy: False
+reset: False
+underlay_routing_protocol: eigrp # eigrp or isis so far
+
+# Credentials and AAA variables
+enable_password: "c1sco123"
+local_user: "admin"
+local_user_password: "c1sco123"
+tacacs_servers_group: "TACACS-SERVERS"
+tacacs_server1: "M29-ISE3"
+tacacs_server1_IP: "10.4.49.32"
+tacacs_server_key: "c1sco123"
+radius_servers_group: "ISE_GROUP"
+radius_server1: "M29-ISE1"
+IP_radius_server1: "10.4.49.30"
+radius_server2: "M29-ISE2"
+IP_radius_server2: "10.4.49.31"
+radius_key: "c1sco123"
+
+# global config variables
+log_buffer_size: 1000000
+dns_server: "10.4.49.10"
+domain_name: "ciscodna.net"
+vtp_domain: "ciscodna"
+config_change_log_size: "1000"
+snmp_acl_name: "SNMP_Allow"
+IP_DNS: "10.4.49.10"
+IP_SYSLOG_server: "10.4.49.15"
+ro_community_string: "cisco"
+rw_community: "cisco"
+#snmp_acl_name: ""
+prefered_ntp_server: "10.4.0.1"
+secondary_ntp_server: "10.4.0.2"
+IP_APIC_EM_Servers: "10.4.49.15"
+IP_PI_Servers: "10.4.49.20"
+IP_SNMP_Servers: "10.4.49.21"
