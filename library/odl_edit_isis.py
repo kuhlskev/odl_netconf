@@ -33,35 +33,37 @@ devices = [
              'password':'c1sco123'
             }
           ]
-ODL_SERVER = '10.203.27.104'
+
 headers = {'Content-Type': 'application/json'}
 odl_user = os.environ.get('ODL_USER', 'admin')
 odl_pass = os.environ.get('ODL_PASS', 'admin')
 
-request_template = '''{
-  "definition": [
+request_template = '''{      
+"isis-container": {
+  "isis": [
     {
-      "name": "%s",
-      "address-family": {
-        "ipv4": {
-          "route-target": {
-            "export": [
-              {
-                "asn-ip": "%s"
-              }
-            ],
-            "import": [
-              {
-                "asn-ip": "%s"
-              }
-            ]
-          }
+      "area-tag": "UNDERLAY",
+      "log-adjacency-changes": {},
+      "net": [
+        {
+          "tag": "49.0001.0100.0001.4001.00"
+        }
+      ],
+      "authentication": {
+        "mode": {
+          "md5": {}
+        },
+        "key-chain": {
+          "name": "UNDERLAY-AUTH"
         }
       },
-      "rd": "%s"
+      "metric-style": {
+        "wide": {}
+      }
     }
   ]
-}'''
+  }
+}'''  
 
 def yaml_loader(filepath):
   with open(filepath, "r") as file_descsriptor:
@@ -72,10 +74,11 @@ if __name__ == "__main__":
   fabric = yaml_loader("/Users/kekuhls/Documents/CIS/projects/odl_netconf/vars_files/ODL_global_fabric_vars.yml")
   for vrf in fabric['vrf']:
       vrf_id = str(vrf['vrf_id']) +':'+ str(vrf['vrf_id'])
-      request_body = request_template % (vrf['vrf_name'], vrf_id, vrf_id, vrf_id)
-      url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
-        '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/vrf/definition/' + vrf['vrf_name']
+      request_body = request_template
+      # Put Node to ODL
+      url = 'http://'+ fabric['ODL_SERVER'] +':8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/' + \
+      fabric['node'] + '/yang-ext:mount/ned:native/router/isis-container'
       print url
       print request_body
-      print 'Adding Vrf ' + vrf['vrf_name']
+      print 'Adding ISIS'
       print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))    

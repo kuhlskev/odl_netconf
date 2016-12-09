@@ -173,11 +173,11 @@ def yaml_loader(filepath):
   return data
 
 if __name__ == "__main__":
-  fabric = yaml_loader("/Users/kekuhls/Documents/CIS/projects/cvd/DNA/vars_files/ODL_global_fabric_vars.yml")
+  fabric = yaml_loader("/Users/kekuhls/Documents/CIS/projects/odl_netconf/vars_files/ODL_global_fabric_vars.yml")
 
   request_body = request_template_protocol % (fabric['lisp']['source_int'])
-  url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-    '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/router/lisp'
+  url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+    '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/router/lisp'
   #print url
   #print request_body
   print 'Adding LISP Base'
@@ -188,8 +188,8 @@ if __name__ == "__main__":
     fabric['lisp']['map_server'][1]['ip_address'], fabric['lisp']['map_server'][1]['key_7'], \
     fabric['lisp']['map_resolver'][0], fabric['lisp']['map_resolver'][1])
 
-  url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-    '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/router/lisp/ipv4'
+  url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+    '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/router/lisp/ipv4'
   #print url
   #print request_body
   print 'Adding LISP Base Config '
@@ -197,8 +197,8 @@ if __name__ == "__main__":
 
   for vrf in fabric['vrf']:
     request_body = request_template_protocol_eid_table % (str(vrf['vrf_id']), vrf['vrf_name'])
-    url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-      '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/router/lisp/' + \
+    url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+      '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/router/lisp/' + \
       'eid-table/instance-list/' + str(vrf['vrf_id'])
   
     #print url
@@ -208,8 +208,8 @@ if __name__ == "__main__":
 
     for vlan in vrf['vlans']:
       request_body = request_template_protocol_eid_table_entry % (vlan['dynamic-eid-name'], vlan['ip_address'][:-1]+'0')
-      url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-        '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/router/lisp/' + \
+      url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+        '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/router/lisp/' + \
         'eid-table/instance-list/' + str(vrf['vrf_id']) + '/dynamic-eid/' + vlan['dynamic-eid-name']
       #print url
       #print request_body
@@ -217,8 +217,8 @@ if __name__ == "__main__":
       print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))         
 
       request_body = request_template_int % (vlan['dynamic-eid-name'])
-      url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-        '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/interface/Vlan/' + \
+      url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+        '/topology/topology-netconf/node/' + fabric['node'] + '/yang-ext:mount/ned:native/interface/Vlan/' + \
         str(vlan['vlan_id']) + '/lisp'
 
       #print url

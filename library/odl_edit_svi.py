@@ -90,12 +90,12 @@ def yaml_loader(filepath):
   return data
 
 if __name__ == "__main__":
-  fabric = yaml_loader("/Users/kekuhls/Documents/CIS/projects/cvd/DNA/vars_files/ODL_global_fabric_vars.yml")
+  fabric = yaml_loader("/Users/kekuhls/Documents/CIS/projects/odl_netconf/vars_files/ODL_global_fabric_vars.yml")
   for vrf in fabric['vrf']:
     for vlan in vrf['vlans']:
       request_body = request_template % (vlan['vlan_id'], fabric['dhcp_source'], fabric['dhcp_server'], vlan['subnet_mask'], vlan['ip_address'], vrf['vrf_name'], vlan['dynamic-eid-name'])
-      url = 'http://'+ ODL_SERVER + ':8181/restconf/config/network-topology:network-topology' + \
-        '/topology/topology-netconf/node/kevios2/yang-ext:mount/ned:native/interface/Vlan/' + str(vlan['vlan_id'])
+      url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
+        '/topology/topology-netconf/node/'+ fabric['node'] + '/yang-ext:mount/ned:native/interface/Vlan/' + str(vlan['vlan_id'])
       print url
       print request_body
       print 'Adding SVI ' + str(vlan['vlan_id'])
