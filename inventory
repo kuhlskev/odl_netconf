@@ -1,0 +1,6 @@
+[all:vars]
+ansible_connection=local
+ansible_python_interpreter = /Users/kekuhls/anaconda/bin/python2.7
+
+[leaf]
+ad3-3850-2

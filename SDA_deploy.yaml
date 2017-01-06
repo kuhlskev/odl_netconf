@@ -1,0 +1,41 @@
+---
+- name: Create configurations from templates and provided variables
+  hosts: leaf
+  connection: local
+  gather_facts: True
+
+  vars_files:
+#    - vars_files/passwords.yml
+    - vars_files/ODL_global_fabric_vars.yml
+#    - vars_files/fabric_ip_scheme.yml
+#    - vars_files/devices.yml
+
+#  roles:
+#    - access
+#    - border
+#    - controller
+
+# this block is for configuration file creation from templates
+  tasks:
+    - include: inner.yaml
+      with_items: "{{fabric}}"
+      loop_control: 
+        loop_var: outer_item
+#    - name: Configure ISIS
+#      odl_edit_isis_ansible:
+#        host: "{{inventory_hostname}}"
+#        area_tag: "{{isis['area_tag']}}"
+#        net: "{{isis['net']}}"
+#        key_chain: "{{isis['key_chain']}}"
+#        odl_server: "{{ODL_SERVER}}"
+#        odl_user: "{{odl_user}}"
+#        odl_password: "{{odl_password}}"
+#    - name: Configure LISP
+#      odl_edit_lisp_ansible:
+#        host: "{{inventory_hostname}}"
+#        area_tag: "{{isis['area_tag']}}"
+#        net: "{{isis['net']}}"
+#        key_chain: "{{isis['key_chain']}}"
+#        odl_server: "{{ODL_SERVER}}"
+#        odl_user: "{{odl_user}}"
+#        odl_password: "{{odl_password}}"

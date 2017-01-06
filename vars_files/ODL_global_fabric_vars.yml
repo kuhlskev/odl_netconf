@@ -45,10 +45,13 @@ IP_APIC_EM_Servers: "10.4.49.15"
 IP_PI_Servers: "10.4.49.20"
 IP_SNMP_Servers: "10.4.49.21"
 
-ODL_SERVER: '10.3.32.20'
+ODL_SERVER: '10.203.27.104'
+odl_user: admin
+odl_password: admin
 node: 'cpoc'
 dhcp_source: Loopback0
 dhcp_server: "10.4.49.11"
+
 
 isis:
   area_tag: UNDERLAY
@@ -67,7 +70,7 @@ lisp:
   map_resolver:
     - '10.4.49.100'
     - '10.4.49.101'
-vrf:
+fabric:
   - vrf_name: VRF-DEVELOPMENT
     vrf_id: 103
     vlans:

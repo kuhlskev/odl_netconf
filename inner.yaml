@@ -1,0 +1,40 @@
+---
+- include_vars: vars_files/ODL_global_fabric_vars.yml
+- name: Configure VRF
+  odl_edit_vrf_ansible:
+    host: "{{inventory_hostname}}"
+    vrf: "{{outer_item['vrf_name']}}"
+    rt_export: "{{outer_item['vrf_id']}}:{{outer_item['vrf_id']}}"
+    rt_import: "{{outer_item['vrf_id']}}:{{outer_item['vrf_id']}}"
+    rd: "{{outer_item['vrf_id']}}:{{outer_item['vrf_id']}}"
+    odl_server: "{{ODL_SERVER}}"
+    odl_user: "{{odl_user}}"
+    odl_password: "{{odl_password}}"
+- name: Configure Vlans
+  odl_edit_vlan_ansible:
+    host: "{{inventory_hostname}}"
+    vlan_id: "{{inner_item['vlan_id']}}"
+    vlan_name: "{{outer_item['vrf_name']}}"
+    odl_server: "{{ODL_SERVER}}"
+    odl_user: "{{odl_user}}"
+    odl_password: "{{odl_password}}"
+  with_items: "{{outer_item['vlans']}}"
+  loop_control: 
+    loop_var: inner_item
+- name: Configure SVIs
+  odl_edit_svi_ansible:
+    host: "{{inventory_hostname}}"
+    vlan_id: "{{inner_item['vlan_id']}}"
+    ip_address: "{{inner_item['ip_address']}}"
+    subnet_mask: "{{inner_item['subnet_mask']}}"
+    odl_server: "{{ODL_SERVER}}"
+    odl_user: "{{odl_user}}"
+    odl_password: "{{odl_password}}"
+    vrf: "{{outer_item['vrf_name']}}"
+    dynamic_eid_name: "{{inner_item['dynamic_eid_name']}}"
+    dhcp_server: "{{dhcp_server}}"
+    dhcp_source: "{{dhcp_source}}"
+  with_items: "{{outer_item['vlans']}}"
+  loop_control: 
+    loop_var: inner_item
+

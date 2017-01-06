@@ -19,20 +19,6 @@ import os
 import requests
 import yaml
 
-devices = [
-            {'address':'172.26.170.83',
-             'name':'kevios2',
-             'port':830,
-             'username':'admin',
-             'password':'c1sco123'
-            },
-            {'address':'172.26.170.84',
-             'name':'kevios3',
-             'port':830,
-             'username':'admin',
-             'password':'c1sco123'
-            }
-          ]
 ODL_SERVER = '10.203.27.104'
 headers = {'Content-Type': 'application/json'}
 odl_user = os.environ.get('ODL_USER', 'admin')
