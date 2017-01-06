@@ -14,15 +14,10 @@ parameter:
 uses HTTP PUT with JSON payload
 """
 
-import sys
-import os
 import requests
 import yaml
 
-ODL_SERVER = '10.203.27.104'
 headers = {'Content-Type': 'application/json'}
-odl_user = os.environ.get('ODL_USER', 'admin')
-odl_pass = os.environ.get('ODL_PASS', 'admin')
 
 request_template = '''{
       "Vlan": [
@@ -85,4 +80,4 @@ if __name__ == "__main__":
       print url
       print request_body
       print 'Adding SVI ' + str(vlan['vlan_id'])
-      print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))    
+      print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))    

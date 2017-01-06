@@ -14,29 +14,10 @@ parameter:
 uses HTTP PUT with JSON payload
 """
 
-import sys
-import os
 import requests
 import yaml
 
-devices = [
-            {'address':'172.26.170.83',
-             'name':'kevios2',
-             'port':830,
-             'username':'admin',
-             'password':'c1sco123'
-            },
-            {'address':'172.26.170.84',
-             'name':'kevios3',
-             'port':830,
-             'username':'admin',
-             'password':'c1sco123'
-            }
-          ]
-
 headers = {'Content-Type': 'application/json'}
-odl_user = os.environ.get('ODL_USER', 'admin')
-odl_pass = os.environ.get('ODL_PASS', 'admin')
 
 request_template = '''{      
 "isis-container": {
@@ -81,4 +62,4 @@ if __name__ == "__main__":
       print url
       print request_body
       print 'Adding ISIS'
-      print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))    
+      print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))    

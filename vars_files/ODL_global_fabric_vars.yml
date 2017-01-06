@@ -47,7 +47,7 @@ IP_SNMP_Servers: "10.4.49.21"
 
 ODL_SERVER: '10.203.27.104'
 odl_user: admin
-odl_password: admin
+odl_pass: admin
 node: 'cpoc'
 dhcp_source: Loopback0
 dhcp_server: "10.4.49.11"

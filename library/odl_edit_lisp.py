@@ -14,14 +14,10 @@ parameter:
 uses HTTP PUT with JSON payload
 """
 
-import sys
-import os
 import requests
 import yaml
 
 headers = {'Content-Type': 'application/json'}
-odl_user = os.environ.get('ODL_USER', 'admin')
-odl_pass = os.environ.get('ODL_PASS', 'admin')
 
 request_template_int = '''{
 "lisp": {
@@ -166,7 +162,7 @@ if __name__ == "__main__":
   #print url
   #print request_body
   print 'Adding LISP Base'
-  print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))  
+  print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))  
 
   request_body = request_template_protocol_ipv4 % (fabric['lisp']['locator_address'][0],fabric['lisp']['locator_address'][1], \
     fabric['lisp']['map_server'][0]['ip_address'], fabric['lisp']['map_server'][0]['key_7'], \
@@ -178,7 +174,7 @@ if __name__ == "__main__":
   #print url
   #print request_body
   print 'Adding LISP Base Config '
-  print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))  
+  print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))  
 
   for vrf in fabric['vrf']:
     request_body = request_template_protocol_eid_table % (str(vrf['vrf_id']), vrf['vrf_name'])
@@ -189,7 +185,7 @@ if __name__ == "__main__":
     #print url
     #print request_body
     print 'Adding LISP EID table for vrf ' + vrf['vrf_name']
-    print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass)) 
+    print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass'])) 
 
     for vlan in vrf['vlans']:
       request_body = request_template_protocol_eid_table_entry % (vlan['dynamic-eid-name'], vlan['ip_address'][:-1]+'0')
@@ -199,7 +195,7 @@ if __name__ == "__main__":
       #print url
       #print request_body
       print 'Adding LISP EID entry ' + vlan['dynamic-eid-name']
-      print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))         
+      print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))         
 
       request_body = request_template_int % (vlan['dynamic-eid-name'])
       url = 'http://'+ fabric['ODL_SERVER'] + ':8181/restconf/config/network-topology:network-topology' + \
@@ -209,4 +205,4 @@ if __name__ == "__main__":
       #print url
       #print request_body
       print 'Adding LISP EID to ' + vlan['name']
-      print requests.put(url, data=request_body, headers=headers,auth=(odl_user, odl_pass))    
+      print requests.put(url, data=request_body, headers=headers,auth=(fabric['odl_user'], fabric['odl_pass']))    
